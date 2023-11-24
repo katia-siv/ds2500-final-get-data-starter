@@ -110,6 +110,7 @@ def read_excel_files(filepaths):
 
 def main():
     
+    print('First commit check baby')
     subfolder_list = list_subfolders(DIRECTORY)
     # sort subfolder list from earliest to latest year
     sorted_subfolder_list = sorted(subfolder_list, key=get_year)
