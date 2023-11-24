@@ -35,21 +35,12 @@ def concatenate_filepath(strings):
     paths = [os.path.join(DIRECTORY, s) for s in strings]
     return paths
 
-def get_year(path):
-    '''Inputs: path (string): a file path to a CSV file.
-       Takes a file path as input and extracts
-       the year from the file name by using regular expressions
-       to find the first numeric sequence.
-       Returns the first numeric sequence found in the file name,
-       or 0 if none is found.
-    '''
-    file_name_str = os.path.split(path)[1]
-    numeric_matches = re.findall(r'\b\d+\b', file_name_str)
-    
-    if numeric_matches:
-        return int(numeric_matches[0])
-    else:
-        return 0
+def get_year(file_name):
+    words = re.split(r'(\d+)', file_name) 
+    for word in words:
+        if word.isnumeric() and len(word) == 4 and word[0] == '2':
+            return int(word)
+    return 0
     
 def get_specific_tables(filepaths):
     ''' Takes a list of filepaths, searches for Excel
@@ -101,8 +92,10 @@ def read_excel_files(filepaths):
             print(f"Filepath: {filepath}")
             print("Header:")
             print(df.columns)
-            print("DataFrame:")
-            print(df)
+# =============================================================================
+#             print("DataFrame:")
+#             print(df)
+# =============================================================================
             print("\n")
 
             # Append the DataFrame to the list
@@ -118,7 +111,9 @@ def read_excel_files(filepaths):
 def main():
     
     subfolder_list = list_subfolders(DIRECTORY)
-    paths = concatenate_filepath(subfolder_list)
+    # sort subfolder list from earliest to latest year
+    sorted_subfolder_list = sorted(subfolder_list, key=get_year)
+    paths = concatenate_filepath(sorted_subfolder_list)
     
     # sorting the path names from earliest to latest year
     # sorted_byyear_list = sorted(subfolder_list, key=get_year)
