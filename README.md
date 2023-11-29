@@ -14,6 +14,3 @@ The data was too large to share on the GitHub, but good news is that it was very
 
 # A few words
 This is just some starter code that I created sitting in an airport ^^ It is unfinished and is intended to give you all a brief look into my ideas for extracting data for our project not mind the formatting.
-
-# The main problem: sorting
-The main problem is that i was not able to sort the subfolder_list from earliest year to latest year. Will work on that in the coming days.
