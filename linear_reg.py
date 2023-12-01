@@ -9,7 +9,7 @@ import numpy as np
 from sklearn.linear_model import LinearRegression
 import matplotlib.pyplot as plt
 
-DIRECTORY = "/Users/ekaterinasivokon/Desktop/ds_final_project/2023_0818_plcy_yearbook_lawful_permanent_residents_fy2022.xlsx_0.xlsx"
+DIRECTORY = "/Users/ekaterinasivokon/Desktop/ds2500-final-get-data-starter/2023_0818_plcy_yearbook_lawful_permanent_residents_fy2022.xlsx_0.xlsx"
 
 
 def excel_to_dataframe(directory):
