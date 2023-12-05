@@ -43,15 +43,19 @@ def clean_dataframe(df):
             df[col] = pd.to_numeric(df[col], errors='coerce')
 
     # Combine all 'Year' and 'Number' columns into two columns
-    year_cols = [col for col in df.columns if 'Year' in col]
-    number_cols = [col for col in df.columns if 'Number' in col]
-
+    year_cols = []
+    for col in df.columns:
+        if 'Year' in col:
+            year_cols.append(col)
+    number_cols = []
+    for col in df.columns:
+        if 'Number' in col:
+            number_cols.append(col)
     df_year = pd.concat([df[col] for col in year_cols])
     df_number = pd.concat([df[col] for col in number_cols])
 
-    # Create a new DataFrame with the combined data
+    # Create new dataframe with combined data
     df_clean = pd.DataFrame({'Year': df_year, 'Number': df_number})
-
     # Drop rows with missing values
     df_clean = df_clean.dropna()
 
@@ -59,20 +63,33 @@ def clean_dataframe(df):
 
 
 def predict_number(df, year):
+    '''
+    Takes DataFrame and year as input, predicts a Number for a given year
+    using linear regression.
+    '''
     X = df['Year'].values.reshape(-1, 1)
     y = df['Number'].values
+    
+    # Create & fit linear regression model
     model = LinearRegression()
     model.fit(X, y)
+    # Predict the Number  
     prediction = model.predict(np.array([[year]]))
     return prediction[0]
 
 
 def plot_data_and_predictions(df, prediction_2023, prediction_user, user_year, title):
+    '''
+    Plots historical data & predictions for specified years. Displays the prediction
+    for 2023 and the prediction for user-provided year.
+    '''
     X = df['Year'].values
     y = df['Number'].values
 
     plt.plot(X, y, color = 'black', label='Historical Data')
+    # Mark 2023 prediction
     plt.scatter(2023, prediction_2023, color='red', label='Prediction for 2023')
+    # Mark user-specified year prediction
     plt.scatter(user_year, prediction_user, color='blue', label=f'Prediction for {user_year}')
 
     plt.xlabel('Year')
@@ -117,22 +134,21 @@ def predict_plot_covid(df, start_year, end_year, title):
     
 def main():
     
-    
+    # Load Excel data into DataFrame
     df = excel_to_dataframe(DIRECTORY)
+    # Clean DataFrame
     df = clean_dataframe(df)
-# =============================================================================
-#     csv_data = df.to_csv(index=False, path_or_buf=None)
-#     csv_file_path = "/Users/ekaterinasivokon/Desktop/ds_final_project.csv"
-#     df.to_csv(csv_file_path, index=False)
-# ===========================================================================
+    
+    # Predict number of persons obtaining lawful permanent resident status for 2023
     prediction_2023 = predict_number(df, 2023)
-    # prediction_2023 = predict_2023_number(df)
-    user_year = 2100
+    # Predict number of persons obtaining lawful permanent resident status for
+    # specified year
+    user_year = 2063
     prediction_user = predict_number(df, user_year)
-    # Plot Data with Prediction
+    
+    # Plot data & predictions
     title = "Prediction: persons obtaining lawful permanent resident status"
     plot_data_and_predictions(df, prediction_2023, prediction_user, user_year, title)
-   
     predict_plot_covid(df, 2019, 2023, "Does the model predict the changes in data during covid?")
     
 if __name__ == "__main__":
