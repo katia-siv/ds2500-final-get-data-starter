@@ -8,6 +8,8 @@ import pandas as pd
 import numpy as np
 from sklearn.linear_model import LinearRegression
 import matplotlib.pyplot as plt
+# Set the global font to be Times New Roman
+plt.rcParams["font.family"] = "Times New Roman"
 
 DIRECTORY = "/Users/ekaterinasivokon/Desktop/ds2500-final-get-data-starter/2023_0818_plcy_yearbook_lawful_permanent_residents_fy2022.xlsx_0.xlsx"
 
@@ -69,13 +71,13 @@ def plot_data_and_predictions(df, prediction_2023, prediction_user, user_year, t
     X = df['Year'].values
     y = df['Number'].values
 
-    plt.plot(X, y, label='Historical Data')
+    plt.plot(X, y, color = 'black', label='Historical Data')
     plt.scatter(2023, prediction_2023, color='red', label='Prediction for 2023')
     plt.scatter(user_year, prediction_user, color='blue', label=f'Prediction for {user_year}')
 
     plt.xlabel('Year')
     plt.ylabel('Number of People')
-    plt.title(title)
+    plt.title(title, fontsize=15)
     plt.legend()
 
     plt.show()
@@ -106,7 +108,7 @@ def predict_plot_covid(df, start_year, end_year, title):
     # Plot predictions for 2019 - 2023
     plt.plot(years, predictions, color='red', label='Predicted Data')
 
-    plt.title(title)
+    plt.title(title, fontsize=15)
     plt.xlabel('Year')
     plt.ylabel('Number')
     plt.legend()
@@ -125,7 +127,7 @@ def main():
 # ===========================================================================
     prediction_2023 = predict_number(df, 2023)
     # prediction_2023 = predict_2023_number(df)
-    user_year = 2043
+    user_year = 2100
     prediction_user = predict_number(df, user_year)
     # Plot Data with Prediction
     title = "Prediction: persons obtaining lawful permanent resident status"
